@@ -70,7 +70,7 @@ func TestAPIEndpoints(t *testing.T) {
 		res := w.Result()
 		assert.Equal(t, http.StatusOK, res.StatusCode)
 		assert.Equal(t, "text/event-stream", res.Header.Get("Content-Type"))
-		assert.Contains(t, w.Body.String(), "data: Mock Stream")
+		assert.Contains(t, w.Body.String(), "data: Mock \n\ndata: Stream\n\n")
 	})
 }
 
