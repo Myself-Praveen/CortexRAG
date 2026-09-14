@@ -47,22 +47,12 @@ func (g *GeminiProvider) GenerateStream(ctx context.Context, prompt string) (<-c
 		defer close(chunks)
 		defer close(errs)
 
-		iter := g.client.Models.GenerateContentStream(ctx, g.model, genai.Text(prompt), nil)
-
-		for {
-			resp, err := iter.Next()
+		for resp, err := range g.client.Models.GenerateContentStream(ctx, g.model, genai.Text(prompt), nil) {
 			if err != nil {
-				// EOF handling typically involves checking iterator completion but genai handles it via iter.Next() returning error like iterator.Done
-				// For simplicity, we just check if it's "iterator done" type of error. The genai library might use standard iterator EOF.
-				// We'll just break on any error.
-				if err.Error() == "no more items in iterator" || err.Error() == "EOF" || err.Error() == "iterator is done" { // Simplified check
-					break
-				}
 				errs <- err
-				break
+				return
 			}
-			text := resp.Text()
-			chunks <- text
+			chunks <- resp.Text()
 		}
 	}()
 
