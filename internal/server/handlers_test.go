@@ -87,10 +87,6 @@ func TestIngestEndpoint(t *testing.T) {
 
 	req := httptest.NewRequest("POST", "/api/ingest", &buf)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
-	w := httptest.NewRecorder()
-	
-	// This will crash because pipeline is nil, but we just verify it reaches ingest.
-	// Actually we expect it to panic. Let's just pass this.
 	// Instead, just test without file to get 400.
 	reqBad := httptest.NewRequest("POST", "/api/ingest", nil)
 	wBad := httptest.NewRecorder()
@@ -100,7 +96,6 @@ func TestIngestEndpoint(t *testing.T) {
 
 func TestServerStart(t *testing.T) {
 	cfg := &config.Config{}
-	cfg.Server.Port = "0" // random port
 	
 	srv := NewServer(cfg, NewAPI(nil, nil))
 	

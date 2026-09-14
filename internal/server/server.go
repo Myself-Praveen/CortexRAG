@@ -47,8 +47,8 @@ func NewServer(cfg *config.Config, api *API) *Server {
 	r.Post("/api/query", api.HandleQuery)
 	r.Get("/api/stream", api.HandleStream)
 
-	addr := ":" + cfg.Server.Port
-	if cfg.Server.Port == "" {
+	addr := fmt.Sprintf(":%d", cfg.Port)
+	if cfg.Port == 0 {
 		addr = ":8080"
 	}
 
