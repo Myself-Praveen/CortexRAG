@@ -1,0 +1,21 @@
+port: 8080
+
+vector:
+  backend: memory
+
+embedding:
+  provider: gemini
+  model: gemini-embedding-001
+
+llm:
+  provider: gemini
+  model: gemini-3.5-flash-lite
+
+rag:
+  chunk_size: 512
+  chunk_overlap: 64
+  cache_size: 10000
+  top_k: 5
+
+worker:
+  count: 0
