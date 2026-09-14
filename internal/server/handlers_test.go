@@ -24,7 +24,7 @@ func (m *mockEmbedder) EmbedBatch(ctx context.Context, texts []string) ([][]floa
 type mockLLM struct{}
 func (m *mockLLM) Generate(ctx context.Context, prompt string) (string, error) { return "Mock Answer", nil }
 func (m *mockLLM) GenerateStream(ctx context.Context, prompt string) (<-chan string, <-chan error) {
-	c := make(chan string, 1)
+	c := make(chan string, 2)
 	e := make(chan error, 1)
 	c <- "Mock "
 	c <- "Stream"
