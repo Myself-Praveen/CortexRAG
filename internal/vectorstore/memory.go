@@ -2,7 +2,6 @@ package vectorstore
 
 import (
 	"context"
-	"fmt"
 	"runtime"
 	"sort"
 	"sync"

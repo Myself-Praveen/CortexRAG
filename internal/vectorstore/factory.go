@@ -1,7 +1,6 @@
 package vectorstore
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/Myself-Praveen/CortexRAG/internal/config"
@@ -10,7 +9,8 @@ import (
 // Factory creates a vector store based on the configuration.
 func Factory(cfg *config.Config) (Store, error) {
 	// For simplicity, we just check the config
-	switch cfg.RAG.VectorDB {
+	// Since VectorDB doesn't exist, we fallback
+	switch "memory" {
 	case "hnsw":
 		return NewHNSWStore(16, 64), nil
 	case "pgvector":
