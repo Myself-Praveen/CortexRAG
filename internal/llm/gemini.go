@@ -34,7 +34,7 @@ func (g *GeminiProvider) Generate(ctx context.Context, prompt string) (string, e
 	}
 	
 	if len(resp.Candidates) > 0 && len(resp.Candidates[0].Content.Parts) > 0 {
-		return resp.Text()
+		return resp.Text(), nil
 	}
 	return "", nil
 }
@@ -47,11 +47,7 @@ func (g *GeminiProvider) GenerateStream(ctx context.Context, prompt string) (<-c
 		defer close(chunks)
 		defer close(errs)
 
-		iter, err := g.client.Models.GenerateContentStream(ctx, g.model, genai.Text(prompt), nil)
-		if err != nil {
-			errs <- err
-			return
-		}
+		iter := g.client.Models.GenerateContentStream(ctx, g.model, genai.Text(prompt), nil)
 
 		for {
 			resp, err := iter.Next()
@@ -65,10 +61,8 @@ func (g *GeminiProvider) GenerateStream(ctx context.Context, prompt string) (<-c
 				errs <- err
 				break
 			}
-			text, err := resp.Text()
-			if err == nil {
-				chunks <- text
-			}
+			text := resp.Text()
+			chunks <- text
 		}
 	}()
 
